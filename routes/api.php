@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+// Example API endpoint route
+Route::get('/api/hostels', 'HostelController@index'); // Assuming HostelController is defined
+
