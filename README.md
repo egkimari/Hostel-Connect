@@ -38,3 +38,15 @@ HostelConnect is a web-based platform that simplifies finding and managing hoste
 - Access the admin panel at `http://localhost:8000/admin`
 - Manage hostels and users through the admin interface
 
+php artisan migrate:rollback
+php artisan migrate
+php artisan db:seed --class=UsersTableSeeder
+
+php artisan route:list
+composer dump-autoload
+
+php artisan route:clear
+php artisan view:clear
+php artisan cache:clear
+
+
