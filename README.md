@@ -1,52 +1,66 @@
 # HostelConnect
 
-HostelConnect is a web-based platform that simplifies finding and managing hostel accommodations for students and landlords.
+HostelConnect is a web-based platform designed to simplify the process of finding and managing hostel accommodations for both students and landlords.
 
-## Installation
+# Installation Guide
 
-1. Clone the repository
-    ```bash
-    git clone https://github.com/yourusername/hostelconnect.git
-    cd hostelconnect
-    ```
+To set up HostelConnect locally, follow these steps:
 
-2. Install dependencies
-    ```bash
-    composer install
-    npm install
-    npm run dev
-    ```
+# 1. Clone the Repository
 
-3. Configure environment variables
-    ```bash
-    cp .env.example .env
-    php artisan key:generate
-    ```
+First, clone the repository from GitHub:
 
-4. Run migrations and seed the database
-    ```bash
-    php artisan migrate --seed
-    ```
+git clone https://github.com/egkimari/Hostel-Connect.git
+cd Hostel-Connect
 
-5. Start the local development server
-    ```bash
-    php artisan serve
-    ```
+# 2. Install Dependencies
 
-## Usage
-
-- Access the admin panel at `http://localhost:8000/admin`
-- Manage hostels and users through the admin interface
-
-php artisan migrate:rollback
-php artisan migrate
-php artisan db:seed --class=UsersTableSeeder
-
-php artisan route:list
-composer dump-autoload
-
-php artisan route:clear
-php artisan view:clear
-php artisan cache:clear
+Install the required dependencies using Composer and npm:
+composer install
+npm install
+npm run dev
 
 
+# 3. Configure Environment Variables
+
+Copy the example environment file and generate an application key:
+cp .env.example .env
+php artisan key:generate
+
+
+# 4. Run Migrations and Seed the Database
+Run the database migrations and seed the database with initial data:
+
+php artisan migrate --seed
+
+
+# 5. Start the Local Development Server
+
+Start the local development server:
+php artisan serve
+
+
+# Usage
+
+# Access the Admin Panel
+
+Access the admin panel at `http://localhost:8000/admin` to manage hostels and users through the admin interface.
+
+# Additional Commands
+- Rollback the last database migration and re-run all migrations:
+    php artisan migrate:rollback
+    php artisan migrate
+
+- Seed the database with user data:
+    php artisan db:seed --class=UsersTableSeeder
+
+- List all routes:  
+    php artisan route:list  
+
+- Rebuild the Composer autoload file:   
+    composer dump-autoload  
+
+- Clear route, view, and cache:    
+    php artisan route:clear
+    php artisan view:clear
+    php artisan cache:clear
