@@ -70,6 +70,7 @@ Route::prefix('landlord')->name('landlord.')->middleware(['auth', 'landlord'])->
     Route::put('bookings/{booking}', [LandlordBookingController::class, 'update'])->name('bookings.update'); // Correct controller name
 });
 
+
 // Student routes
 Route::prefix('student')->name('student.')->middleware(['auth', 'student'])->group(function () {
     Route::get('dashboard', [StudentDashboardController::class, 'index'])->name('dashboard');
