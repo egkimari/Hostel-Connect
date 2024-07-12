@@ -1,34 +1,60 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Hostel;
+use Illuminate\Http\Request;
 
 class HostelController extends Controller
 {
     public function index()
     {
         $hostels = Hostel::all();
-        return view('hostels.index', compact('hostels'));
+        return view('admin.hostels.index', compact('hostels'));
     }
 
     public function create()
     {
-        return view('hostels.create');
+        return view('admin.hostels.create');
     }
 
     public function store(Request $request)
     {
-        $hostel = new Hostel($request->all());
-        $hostel->user_id = auth()->id();
-        $hostel->save();
-        return redirect()->route('hostels.index');
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'rooms' => 'required|integer|min:1',
+            'description' => 'nullable|string',
+        ]);
+
+        Hostel::create($data);
+
+        return redirect()->route('admin.hostels.index')->with('success', 'Hostel added successfully.');
     }
 
-    public function show($id)
+    public function edit(Hostel $hostel)
     {
-        $hostel = Hostel::findOrFail($id);
-        return view('hostels.show', compact('hostel'));
+        return view('admin.hostels.edit', compact('hostel'));
+    }
+
+    public function update(Request $request, Hostel $hostel)
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'rooms' => 'required|integer|min:1',
+            'description' => 'nullable|string',
+        ]);
+
+        $hostel->update($data);
+
+        return redirect()->route('admin.hostels.index')->with('success', 'Hostel updated successfully.');
+    }
+
+    public function destroy(Hostel $hostel)
+    {
+        $hostel->delete();
+        return redirect()->route('admin.hostels.index')->with('success', 'Hostel deleted successfully.');
     }
 }

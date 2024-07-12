@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
@@ -8,7 +7,6 @@ use Illuminate\Http\Request;
 
 class HostelController extends Controller
 {
-    //
     public function index()
     {
         $hostels = Hostel::all();
@@ -22,7 +20,16 @@ class HostelController extends Controller
 
     public function store(Request $request)
     {
-        // Validation and storing logic
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'rooms' => 'required|integer|min:1',
+            'description' => 'nullable|string',
+        ]);
+
+        Hostel::create($data);
+
+        return redirect()->route('admin.hostels.index')->with('success', 'Hostel added successfully.');
     }
 
     public function edit(Hostel $hostel)
@@ -32,12 +39,21 @@ class HostelController extends Controller
 
     public function update(Request $request, Hostel $hostel)
     {
-        // Validation and updating logic
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'location' => 'required|string|max:255',
+            'rooms' => 'required|integer|min:1',
+            'description' => 'nullable|string',
+        ]);
+
+        $hostel->update($data);
+
+        return redirect()->route('admin.hostels.index')->with('success', 'Hostel updated successfully.');
     }
 
     public function destroy(Hostel $hostel)
     {
         $hostel->delete();
-        return redirect()->route('admin.hostels.index');
+        return redirect()->route('admin.hostels.index')->with('success', 'Hostel deleted successfully.');
     }
 }

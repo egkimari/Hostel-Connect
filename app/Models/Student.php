@@ -9,15 +9,15 @@ class Student extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
     protected $fillable = [
-        'user_id',
-        'student_number',
-        'course',
+        'name',
+        'email',
+        'phone',
+        'address',
     ];
-
-    // Define inverse polymorphic relationship
-    public function user()
-    {
-        return $this->morphOne(User::class, 'userable');
-    }
 }

@@ -16,7 +16,8 @@ class CreateBookingsTable extends Migration
         {
             Schema::create('bookings', function (Blueprint $table) {
                 $table->id('booking_id'); // Define booking_id as primary key
-                $table->foreignId('hostel_id')->constrained()->onDelete('cascade'); // Define hostel_id with fk1 name
+                $table->foreignId('hostel_id')->constrained()->onDelete('cascade'); //fk1 
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
                 $table->date('checkin_date');
                 $table->date('checkout_date');
                 $table->text('preferences')->nullable();

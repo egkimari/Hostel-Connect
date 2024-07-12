@@ -2,35 +2,48 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use Notifiable;
 
     protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'role',
+        'name', 'email', 'password', 'is_admin', 'is_landlord', 'userable_type', 'userable_id',
     ];
 
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password', 'remember_token',
     ];
 
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
-
-    // Define polymorphic relationship for Student and Admin
     public function userable()
     {
         return $this->morphTo();
+    }
+
+    public function isAdmin()
+    {
+        return $this->is_admin;
+    }
+
+    public function isLandlord()
+    {
+        return $this->is_landlord;
+    }
+
+    public function updateProfile($name, $email, $password = null)
+    {
+        $updateData = [
+            'name' => $name,
+            'email' => $email,
+        ];
+
+        if ($password) {
+            $updateData['password'] = Hash::make($password);
+        }
+
+        $this->update($updateData);
     }
 }

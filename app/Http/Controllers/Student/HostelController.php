@@ -3,17 +3,19 @@
 namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
+use App\Models\Hostel;
 use Illuminate\Http\Request;
 
 class HostelController extends Controller
 {
     public function index()
     {
-        return view('student.hostels.index');
+        $hostels = Hostel::all();
+        return view('student.hostels.index', compact('hostels'));
     }
 
-    public function show($id)
+    public function show(Hostel $hostel)
     {
-        return view('student.hostels.show', compact('id'));
+        return view('student.hostels.show', compact('hostel'));
     }
 }

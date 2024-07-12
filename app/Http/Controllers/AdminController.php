@@ -1,125 +1,57 @@
 <?php
+// app/Http/Controllers/AdminController.php
 
 namespace App\Http\Controllers;
-use App\Models\Hostel;
+
 use Illuminate\Http\Request;
-use App\Models\User;
+use App\Models\Hostel;
 
 class AdminController extends Controller
 {
-    // Method to show all hostels
-    public function index()
+    public function dashboard()
     {
-        $hostels = Hostel::all();
-        return view('admin.hostel.index', compact('hostels'));
+        // logic for the dashboard
     }
 
-    // Method to show create hostel form
-    public function createHostel()
+    public function pages()
     {
-        return view('admin.hostel.create');
+        // logic for the pages route
+        return view('admin.pages');
     }
 
-    // Method to store a new hostel
-    public function storeHostel(Request $request)
+    public function create()
     {
-        // Validate and store the hostel
+        // view for creating a new hostel
+        return view('admin.create');
+    }
+
+    // Store method for handling the form submission
+    public function store(Request $request)
+    {
+        // Validate incoming request data
         $request->validate([
             'name' => 'required',
             'location' => 'required',
-            'rooms' => 'required|integer'
+            'rooms' => 'required|integer',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048' // Validation rule for image file
         ]);
 
-        Hostel::create($request->all());
-        return redirect()->route('admin.hostel.index');
-    }
+        // Create a new Hostel instance with all request data except 'image'
+        $hostel = new Hostel($request->except('image'));
 
-    // Method to show edit hostel form
-    public function editHostel($id)
-    {
-        $hostel = Hostel::findOrFail($id);
-        return view('admin.hostel.edit', compact('hostel'));
-    }
+        // Handle image upload if a file is present in the request
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('hostel_images', 'public');
+            $hostel->image = $imagePath;
+        }
 
-    // Method to update a hostel
-    public function updateHostel(Request $request, $id)
-    {
-        // Validate and update the hostel
-        $request->validate([
-            'name' => 'required',
-            'location' => 'required',
-            'rooms' => 'required|integer'
-        ]);
+        // Assign the authenticated user's ID as the user_id for the hostel
+        $hostel->user_id = auth()->id();
 
-        $hostel = Hostel::findOrFail($id);
-        $hostel->update($request->all());
-        return redirect()->route('admin.hostel.index');
-    }
+        // Save the hostel instance to the database
+        $hostel->save();
 
-    // Method to delete a hostel
-    public function destroyHostel($id)
-    {
-        $hostel = Hostel::findOrFail($id);
-        $hostel->delete();
-        return redirect()->route('admin.hostel.index');
-    }
-
-    // Method to show all users
-    public function manageUsers()
-    {
-        $users = User::all();
-        return view('admin.users', compact('users'));
-    }
-
-    // Method to show create user form
-    public function createUser()
-    {
-        return view('admin.users.create');
-    }
-
-    // Method to store a new user
-    public function storeUser(Request $request)
-    {
-        // Validate and store the user
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:8',
-            'role' => 'required'
-        ]);
-
-        User::create($request->all());
-        return redirect()->route('admin.users');
-    }
-
-    // Method to show edit user form
-    public function editUser($id)
-    {
-        $user = User::findOrFail($id);
-        return view('admin.users.edit', compact('user'));
-    }
-
-    // Method to update a user
-    public function updateUser(Request $request, $id)
-    {
-        // Validate and update the user
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|min:8',
-            'role' => 'required'
-        ]);
-
-        $user = User::findOrFail($id);
-        $user->update($request->all());
-        return redirect()->route('admin.users');
-    }
-
-    // Method to delete a user
-    public function destroyUser($id)
-    {
-        $user = User::findOrFail($id);
-        $user->delete();
-        return redirect()->route('admin.users');
+        // Redirect to the index route for hostels after successful creation
+        return redirect()->route('admin.hostels.index');
     }
 }

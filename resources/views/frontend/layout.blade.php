@@ -73,7 +73,7 @@
 
     <!-- Footer Section -->
     <footer>
-        <div class="container">
+        <div class="container text-center">
             <p>&copy; 2024 HostelConnect. All rights reserved.</p>
         </div>
     </footer>
